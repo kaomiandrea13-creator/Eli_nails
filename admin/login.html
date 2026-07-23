@@ -1,62 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Eli Nail's | Acceso Administradora</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600,0,700;1,600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="icon" type="image/png" href="../img/logo.png">
-  <link rel="stylesheet" href="admin.css">
-</head>
+<head><meta charset="UTF-8"><title>Login Admin</title>
+<link rel="stylesheet" href="admin.css"></head>
 <body class="login-body">
-
-  <div class="login-card glass">
-    <div class="login-brand">
-      <img src="../img/logo.png" alt="Eli Nail's" onerror="this.style.display='none'">
-      <span>Eli Nail's</span>
-    </div>
-    <p class="login-sub">Panel de administradora</p>
-
-    <form id="loginForm" novalidate>
-      <div class="form-group">
-        <label for="email"><i class="fa-solid fa-envelope"></i> Correo</label>
-        <input type="email" id="email" name="email" placeholder="admin@elinails.com" required>
-      </div>
-      <div class="form-group">
-        <label for="password"><i class="fa-solid fa-lock"></i> Contraseña</label>
-        <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" required autofocus>
-      </div>
-      <button type="submit" class="btn btn-primary btn-block" id="btnLogin">
-        Ingresar <i class="fa-solid fa-arrow-right-to-bracket"></i>
-      </button>
-      <p class="login-msg" id="loginMsg"></p>
-    </form>
-
-    <a href="../index.html" class="login-back"><i class="fa-solid fa-arrow-left"></i> Volver al sitio</a>
-  </div>
-
+<div class="login-card">
+<h2>Eli Nail's Admin</h2>
+<form id="f">
+<input type="email" id="email" placeholder="admin@elinails.com" required>
+<input type="password" id="pass" placeholder="elinails2025" required>
+<button>Ingresar</button><p id="m" style="color:red"></p>
+</form></div>
 <script>
-// AQUÍ PONES TU CLAVE
-const CLAVE_ADMIN = "elinails2025"; 
-const CORREO_ADMIN = "admin@elinails.com";
-
-document.getElementById('loginForm').addEventListener('submit', function(e){
-  e.preventDefault();
-  const email = document.getElementById('email').value;
-  const pass = document.getElementById('password').value;
-  const msg = document.getElementById('loginMsg');
-
-  if(email === CORREO_ADMIN && pass === CLAVE_ADMIN){
-    localStorage.setItem('adminLogin', 'true');
-    window.location.href = 'admin.html';
-  } else {
-    msg.style.color = 'red';
-    msg.textContent = 'Correo o contraseña incorrecta. Intenta de nuevo.';
-  }
-});
+document.getElementById('f').onsubmit = e => {
+e.preventDefault();
+if(email.value==='admin@elinails.com' && pass.value==='elinails2025'){
+localStorage.setItem('adminLogin','true'); location.href='admin.html';
+}else{m.textContent='Clave incorrecta'}}
 </script>
-</body>
-</html>
+</body></html>
