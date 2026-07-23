@@ -129,6 +129,30 @@ document.addEventListener("DOMContentLoaded", () => {
     reader.readAsDataURL(file);
   });
 
+  /* ---------- Comprime una imagen y la convierte a Base64 ----------
+     Como no usamos Firebase Storage, guardamos la captura directo
+     en el documento de Firestore. Para que quepa (límite ~1MB por
+     documento), la reducimos de tamaño y comprimimos como JPEG. */
+  function comprimirImagenABase64(file, maxAncho = 900, calidad = 0.6) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const reader = new FileReader();
+      reader.onload = (e) => { img.src = e.target.result; };
+      reader.onerror = reject;
+      img.onload = () => {
+        const escala = Math.min(1, maxAncho / img.width);
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width * escala;
+        canvas.height = img.height * escala;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", calidad));
+      };
+      img.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
   const registroForm = document.getElementById("registroForm");
   const formMsg = document.getElementById("formMsg");
   const boletoResult = document.getElementById("boletoResult");
@@ -159,10 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
     btnParticipar.innerHTML = 'Enviando... <i class="fa-solid fa-spinner fa-spin"></i>';
 
     try {
-      const nombreArchivo = `comprobantes/${Date.now()}_${file.name}`;
-      const storageRef = storage.ref(nombreArchivo);
-      await storageRef.put(file);
-      const comprobanteURL = await storageRef.getDownloadURL();
+      const comprobanteURL = await comprimirImagenABase64(file);
 
       const numeroAsignado = await db.runTransaction(async (transaction) => {
         const configSnap = await transaction.get(configRef);
