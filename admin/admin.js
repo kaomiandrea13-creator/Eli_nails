@@ -82,7 +82,10 @@ if (!esPaginaLogin) {
     } catch (err) {
       premioMsg.textContent = "No se pudo guardar. Intenta de nuevo.";
       premioMsg.className = "admin-msg error";
-    }/* ---------- Comprime una imagen y la convierte a Base64
+    }
+  });
+
+  /* ---------- Comprime una imagen y la convierte a Base64
      (no usamos Firebase Storage, se guarda directo en Firestore) ---------- */
   function comprimirImagenABase64(file, maxAncho = 800, calidad = 0.7) {
     return new Promise((resolve, reject) => {
@@ -283,4 +286,4 @@ if (!esPaginaLogin) {
     XLSX.utils.book_append_sheet(libro, hoja, "Participantes");
     XLSX.writeFile(libro, `Eli-Nails-Sorteo-${sorteoActual}.xlsx`);
   });
-        }
+                         }
