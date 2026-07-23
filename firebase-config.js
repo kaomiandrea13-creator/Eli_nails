@@ -1,10 +1,10 @@
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_PROYECTO.firebaseapp.com",
-  projectId: "TU_PROYECTO",
-  storageBucket: "TU_PROYECTO.appspot.com",
-  messagingSenderId: "TU_SENDER_ID",
-  appId: "TU_APP_ID"
+  apiKey: "AIzaSyC5NracBFaVlXWPpy_i3LE6AnSiY-YHi2Y",
+  authDomain: "eli-nails-68adc.firebaseapp.com",
+  projectId: "eli-nails-68adc",
+  storageBucket: "eli-nails-68adc.firebasestorage.app",
+  messagingSenderId: "817937573002",
+  appId: "1:817937573002:web:d43361a8b25b27b2897973"
 };
 
 if (!firebase.apps.length) {
