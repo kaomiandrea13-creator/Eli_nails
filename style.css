@@ -588,6 +588,13 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   .fab { width: 48px; height: 48px; font-size: 19px; right: 16px; }
   .fab-whatsapp { bottom: 16px; }
   .fab-top { bottom: 74px; }
+} body, html {
+  overflow-x: hidden;
+  width: 100%;
+}
+img {
+  max-width: 100%;
+  height: auto;
 }
 
 @media (max-width: 380px) {
