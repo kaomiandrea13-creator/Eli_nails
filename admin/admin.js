@@ -82,9 +82,29 @@ if (!esPaginaLogin) {
     } catch (err) {
       premioMsg.textContent = "No se pudo guardar. Intenta de nuevo.";
       premioMsg.className = "admin-msg error";
-    }
-  });
+    }/* ---------- Comprime una imagen y la convierte a Base64
+     (no usamos Firebase Storage, se guarda directo en Firestore) ---------- */
+  function comprimirImagenABase64(file, maxAncho = 800, calidad = 0.7) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const reader = new FileReader();
+      reader.onload = (e) => { img.src = e.target.result; };
+      reader.onerror = reject;
+      img.onload = () => {
+        const escala = Math.min(1, maxAncho / img.width);
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width * escala;
+        canvas.height = img.height * escala;
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", calidad));
+      };
+      img.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
 
+  /* ---------- Subir nueva foto del premio ---------- */
   document.getElementById("inputFotoPremio").addEventListener("change", async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -92,10 +112,8 @@ if (!esPaginaLogin) {
     msg.textContent = "Subiendo imagen...";
     msg.className = "admin-msg";
     try {
-      const ref = storage.ref(`premio/${Date.now()}_${file.name}`);
-      await ref.put(file);
-      const url = await ref.getDownloadURL();
-      await configRef.update({ premioImagenURL: url });
+      const base64 = await comprimirImagenABase64(file);
+      await configRef.update({ premioImagenURL: base64 });
       msg.textContent = "Foto del premio actualizada.";
       msg.className = "admin-msg success";
     } catch (err) {
@@ -104,6 +122,7 @@ if (!esPaginaLogin) {
     }
   });
 
+  /* ---------- Subir nuevo QR de Yape ---------- */
   document.getElementById("inputQR").addEventListener("change", async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -111,10 +130,8 @@ if (!esPaginaLogin) {
     msg.textContent = "Subiendo QR...";
     msg.className = "admin-msg";
     try {
-      const ref = storage.ref(`qr/${Date.now()}_${file.name}`);
-      await ref.put(file);
-      const url = await ref.getDownloadURL();
-      await configRef.update({ qrYapeURL: url });
+      const base64 = await comprimirImagenABase64(file, 500, 0.8);
+      await configRef.update({ qrYapeURL: base64 });
       msg.textContent = "QR actualizado.";
       msg.className = "admin-msg success";
     } catch (err) {
